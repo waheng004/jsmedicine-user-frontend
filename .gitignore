@@ -1,0 +1,20 @@
+# 1. 忽略依赖包（前端最大的垃圾堆，绝对不传！）
+node_modules/
+
+# 2. 忽略 Nuxt 3 自动生成的本地缓存和打包输出
+.nuxt/
+.output/
+dist/
+
+# 3. 忽略本地日志文件
+*.log
+*.log*
+
+# 4. 忽略本地环境变量文件（保护你的接口密钥、密码）
+.env
+.env.*
+!.env.example
+
+# 5. 忽略操作系统的系统垃圾文件
+.DS_Store
+Thumbs.db
