@@ -111,7 +111,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import DoctorCard from '~/components/DoctorCard.vue'
 import { useCommonStore } from '~/stores/common'
-import { useApi } from '~/composables/useApi'
+import { search } from '~/utils/api/search'
 
 const router = useRouter()
 const commonStore = useCommonStore()
@@ -154,10 +154,7 @@ const performSearch = async (keyword: string) => {
   isSearching.value = true
   
   try {
-    const response = await useApi('/api/search', {
-      method: 'POST',
-      body: { keyword }
-    })
+    const response = await search({ keyword })
     
     if (response.data) {
       searchResults.value = response.data.doctors || []

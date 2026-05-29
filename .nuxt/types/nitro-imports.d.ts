@@ -145,5 +145,5 @@ export { getRouteRules } from 'nitropack/runtime/internal/route-rules';
 export { useEvent } from 'nitropack/runtime/internal/context';
 export { defineTask, runTask } from 'nitropack/runtime/internal/task';
 export { defineNitroErrorHandler } from 'nitropack/runtime/internal/error/utils';
-export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from 'C:/Users/10779/NuxtProject/node_modules/.pnpm/@nuxt+nitro-server@3.21.6_d_77e9a922ce32996c4e91548700b69ba7/node_modules/@nuxt/nitro-server/dist/runtime/utils/paths';
-export { defineAppConfig } from 'C:/Users/10779/NuxtProject/node_modules/.pnpm/@nuxt+nitro-server@3.21.6_d_77e9a922ce32996c4e91548700b69ba7/node_modules/@nuxt/nitro-server/dist/runtime/utils/config';
+export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from 'C:/Desktop/NuxtProject/node_modules/.pnpm/@nuxt+nitro-server@3.21.6_d_77e9a922ce32996c4e91548700b69ba7/node_modules/@nuxt/nitro-server/dist/runtime/utils/paths';
+export { defineAppConfig } from 'C:/Desktop/NuxtProject/node_modules/.pnpm/@nuxt+nitro-server@3.21.6_d_77e9a922ce32996c4e91548700b69ba7/node_modules/@nuxt/nitro-server/dist/runtime/utils/config';

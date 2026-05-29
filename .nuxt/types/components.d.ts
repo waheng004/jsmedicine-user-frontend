@@ -16,6 +16,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 interface _GlobalComponents {
   DoctorCard: typeof import("../../components/DoctorCard.vue")['default']
   StatusTag: typeof import("../../components/StatusTag.vue")['default']
+  UnoIcon: typeof import("../../node_modules/.pnpm/@unocss+nuxt@0.60.4_magicas_1c048bcd9cf2c7b95607ae416e5b2d5a/node_modules/@unocss/nuxt/runtime/UnoIcon.vue")['default']
   NuxtWelcome: typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/welcome.vue")['default']
   NuxtLayout: typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-layout")['default']
   NuxtErrorBoundary: typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -41,6 +42,7 @@ interface _GlobalComponents {
   NuxtIsland: typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-island")['default']
   LazyDoctorCard: LazyComponent<typeof import("../../components/DoctorCard.vue")['default']>
   LazyStatusTag: LazyComponent<typeof import("../../components/StatusTag.vue")['default']>
+  LazyUnoIcon: LazyComponent<typeof import("../../node_modules/.pnpm/@unocss+nuxt@0.60.4_magicas_1c048bcd9cf2c7b95607ae416e5b2d5a/node_modules/@unocss/nuxt/runtime/UnoIcon.vue")['default']>
   LazyNuxtWelcome: LazyComponent<typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   LazyNuxtLayout: LazyComponent<typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
   LazyNuxtErrorBoundary: LazyComponent<typeof import("../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

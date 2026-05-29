@@ -6,6 +6,9 @@
 // 认证相关
 export * from './auth'
 
+// 互动相关
+export * from './interaction'
+
 // 首页相关
 export * from './home'
 
@@ -23,6 +26,15 @@ export * from './question'
 
 // 播客相关
 export * from './podcast'
+
+// 学习资源相关
+export * from './learning'
+
+// 知识库相关
+export * from './knowledge'
+
+// 直播相关
+export * from './live'
 
 // 个人中心
 export * from './user'

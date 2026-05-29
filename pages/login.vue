@@ -1,82 +1,62 @@
 <template>
-  <div class="login-page">
-    <div class="login-container">
-      <div class="login-header">
-        <div class="logo">🏥</div>
-        <h1 class="title">中医馆管理系统</h1>
-        <p class="subtitle">传承中医智慧，守护健康生活</p>
+  <div min-h-screen bg-gradient-to-br from-amber-50 to-stone-100 flex items-center justify-center p-6>
+    <div w-full max-w-md bg-white rounded-2xl shadow-xl p-8>
+      <div text-center mb-8>
+        <div text-6xl mb-4>🏥</div>
+        <h1 text-2xl font-bold text-gray-900 mb-2>中医馆管理系统</h1>
+        <p text-sm text-gray-500>传承中医智慧，守护健康生活</p>
       </div>
-      
-      <div class="login-tabs">
-        <button 
-          class="tab-btn" 
-          :class="{ active: loginType === 'password' }"
-          @click="loginType = 'password'"
-        >
-          密码登录
-        </button>
-        <button 
-          class="tab-btn" 
-          :class="{ active: loginType === 'sms' }"
-          @click="loginType = 'sms'"
-        >
-          短信验证码
-        </button>
+
+      <div flex gap-2 mb-6 p-1 bg-gray-100 rounded-xl>
+        <button flex-1 py-3 rounded-lg text-sm font-medium transition-all :class="loginType === 'password' ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-md' : 'text-gray-600'" @click="loginType = 'password'">密码登录</button>
+        <button flex-1 py-3 rounded-lg text-sm font-medium transition-all :class="loginType === 'sms' ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-md' : 'text-gray-600'" @click="loginType = 'sms'">短信验证码</button>
       </div>
-      
-      <form class="login-form" @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label class="form-label">手机号码</label>
-          <input 
-            v-model="form.phone" 
-            type="tel" 
-            class="form-input" 
-            placeholder="请输入手机号"
-            required
-          />
+
+      <form space-y-5 @submit.prevent="handleLogin">
+        <div>
+          <label block text-sm font-medium text-gray-700 mb-2>手机号码</label>
+          <input v-model="form.phone" type="tel" placeholder="请输入手机号" px-4 py-3 w-full bg-gray-50 border border-gray-200 rounded-xl outline-none focus="border-amber-500 bg-white" transition-all required />
         </div>
-        
-        <div class="form-group">
-          <label class="form-label">
-            {{ loginType === 'password' ? '密码' : '验证码' }}
-          </label>
-          <div class="input-group">
-            <input 
-              v-model="form.password" 
-              :type="loginType === 'password' ? 'password' : 'text'" 
-              class="form-input" 
-              :placeholder="loginType === 'password' ? '请输入密码' : '请输入验证码'"
-              required
-            />
-            <button 
-              v-if="loginType === 'sms'" 
-              type="button" 
-              class="sms-btn"
-              :disabled="smsDisabled"
-              @click="sendSms"
-            >
-              {{ smsText }}
-            </button>
+
+        <div>
+          <label block text-sm font-medium text-gray-700 mb-2>{{ loginType === 'password' ? '密码' : '验证码' }}</label>
+          <div relative>
+            <input v-model="form.password" :type="loginType === 'password' ? 'password' : 'text'" :placeholder="loginType === 'password' ? '请输入密码' : '请输入验证码'" px-4 py-3 w-full bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all required />
+            <button v-if="loginType === 'sms'" type="button" absolute right-2 :top="1/2" :-translate-y="1/2" px-3 py-1 bg-gradient-to-r from-amber-600 to-amber-500 text-white text-xs rounded-lg cursor-pointer :disabled="smsDisabled" :class="smsDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'" @click="sendSms">{{ smsText }}</button>
           </div>
         </div>
-        
-        <div class="form-options">
-          <label class="checkbox-label">
+
+        <div flex justify-between items-center>
+          <label flex items-center gap-2 cursor-pointer>
             <input type="checkbox" v-model="form.remember" />
-            <span>记住我</span>
+            <span text-sm text-gray-600>记住我</span>
           </label>
-          <a href="#" class="forgot-link">忘记密码？</a>
+          <span text-sm text-amber-600 cursor-pointer hover:text-amber-800>忘记密码？</span>
         </div>
-        
-        <button type="submit" class="login-btn" :disabled="loading">
+
+        <button type="submit" w-full py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white text-base font-semibold rounded-xl shadow-lg :shadow="`amber-500/30`" hover="shadow-xl opacity-90" :disabled="loading" transition-all :class="loading ? 'opacity-70 cursor-not-allowed' : ''">
           <span v-if="loading">登录中...</span>
           <span v-else>登 录</span>
         </button>
       </form>
-      
-      <div class="login-footer">
-        <span>还没有账号？</span>
-        <a href="#" class="register-link">立即注册</a>
+
+      <div text-center mt-6>
+        <span text-sm text-gray-500>还没有账号？</span>
+        <span text-sm text-amber-600 font-medium cursor-pointer hover:text-amber-800 ml-1>立即注册</span>
+      </div>
+
+      <div mt-8 pt-6 border-t border-gray-100>
+        <p text-center text-xs text-gray-400 mb-4>其他登录方式</p>
+        <div flex justify-center gap-6>
+          <div flex flex-col items-center gap-1 cursor-pointer hover:opacity-70 transition-opacity>
+            <span text-3xl>💬</span>
+            <span text-xs text-gray-500>微信</span>
+          </div>
+          <div flex flex-col items-center gap-1 cursor-pointer hover:opacity-70 transition-opacity>
+            <span text-3xl>📱</span>
+            <span text-xs text-gray-500>手机</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -85,11 +65,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '~/stores/user'
-import { useApi } from '~/composables/useApi'
+import { login, sendSmsCode, loginBySms } from '~/utils/api/auth'
 
 const router = useRouter()
-const userStore = useUserStore()
 
 const loginType = ref<'password' | 'sms'>('password')
 const loading = ref(false)
@@ -115,12 +93,9 @@ const sendSms = async () => {
     alert('请先输入手机号')
     return
   }
-  
+
   try {
-    await useApi('/api/sms/send', {
-      method: 'POST',
-      body: { phone: form.value.phone }
-    })
+    await sendSmsCode({ mobile: form.value.phone })
     smsCountdown.value = 60
     const timer = setInterval(() => {
       smsCountdown.value--
@@ -138,23 +113,16 @@ const handleLogin = async () => {
     alert('请填写完整信息')
     return
   }
-  
+
   loading.value = true
-  
+
   try {
-    const response = await useApi('/api/login', {
-      method: 'POST',
-      body: {
-        phone: form.value.phone,
-        password: form.value.password,
-        type: loginType.value
-      }
-    })
-    
-    const { token, userInfo } = response.data
-    
-    await userStore.login(token, userInfo)
-    
+    if (loginType.value === 'password') {
+      await login({ username: form.value.phone, password: form.value.password })
+    } else {
+      await loginBySms({ mobile: form.value.phone, code: form.value.password })
+    }
+
     alert('登录成功')
     router.push('/')
   } catch (err: any) {
@@ -164,189 +132,3 @@ const handleLogin = async () => {
   }
 }
 </script>
-
-<style scoped>
-.login-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #faf6f1 0%, #f0ebe5 100%);
-  padding: 20px;
-}
-
-.login-container {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
-  border-radius: 20px;
-  padding: 40px 32px;
-  box-shadow: 0 10px 40px rgba(193, 150, 96, 0.15);
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.logo {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 8px 0;
-}
-
-.subtitle {
-  font-size: 14px;
-  color: #999;
-  margin: 0;
-}
-
-.login-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  padding: 6px;
-  background: #f5f5f5;
-  border-radius: 12px;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 500;
-  color: #666;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.tab-btn.active {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(193, 150, 96, 0.3);
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.form-input {
-  padding: 14px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #333;
-  background: #fafafa;
-  transition: all 0.3s;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #c19660;
-  background: #fff;
-}
-
-.input-group {
-  position: relative;
-}
-
-.sms-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.sms-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #666;
-  cursor: pointer;
-}
-
-.forgot-link {
-  font-size: 13px;
-  color: #c19660;
-  text-decoration: none;
-}
-
-.login-btn {
-  padding: 16px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(193, 150, 96, 0.3);
-}
-
-.login-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(193, 150, 96, 0.4);
-}
-
-.login-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 24px;
-  font-size: 14px;
-  color: #666;
-}
-
-.register-link {
-  color: #c19660;
-  text-decoration: none;
-  font-weight: 500;
-}
-</style>

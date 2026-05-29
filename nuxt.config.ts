@@ -1,7 +1,7 @@
-export default defineNuxtConfig({
+export default {
   modules: [
     '@pinia/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@unocss/nuxt'
   ],
   
   css: [
@@ -13,6 +13,11 @@ export default defineNuxtConfig({
       'defineStore',
       'storeToRefs'
     ]
+  },
+  
+  unocss: {
+    attributify: true,
+    uno: true
   },
   
   app: {
@@ -30,4 +35,4 @@ export default defineNuxtConfig({
       apiBaseURL: '/api'
     }
   }
-})
+}

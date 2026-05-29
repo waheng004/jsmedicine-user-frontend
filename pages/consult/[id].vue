@@ -1,328 +1,102 @@
 <template>
-  <div class="consult-page">
-    <div class="chat-header">
-      <button class="back-btn" @click="goBack">←</button>
-      <div class="doctor-info">
-        <img :src="doctorInfo.avatar" :alt="doctorInfo.name" class="doctor-avatar" />
-        <div class="doctor-detail">
-          <h3 class="doctor-name">{{ doctorInfo.name }}</h3>
-          <span class="doctor-title">{{ doctorInfo.title }}</span>
+  <div min-h-screen bg-gray-50>
+    <header fixed top-0 left-0 right-0 h-16 bg-white z-50 border-b border-gray-100 shadow-sm>
+      <div max-w-7xl mx-auto h-full flex justify-between items-center px-6>
+        <div flex items-center space-x-3>
+          <span text-2xl>🏥</span>
+          <span text-xl font-bold text-amber-900>江苏中医在线</span>
+        </div>
+        <nav flex space-x-8 text-base>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/')">首页</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/topics')">专题学习</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/exam')">在线考核</span>
+          <span cursor-pointer text-amber-800 font-bold>咨询医师</span>
+        </nav>
+        <div></div>
+      </div>
+    </header>
+
+    <main pt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div grid grid-cols-12 gap-8>
+          <div col-span-4>
+            <div sticky top-24 bg-white rounded-xl shadow-sm p-6>
+              <h3 text-lg font-bold text-gray-900 mb-4>咨询分类</h3>
+              <div space-y-2>
+                <div v-for="category in categories" :key="category.id" flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors :class="activeCategory === category.id ? 'bg-amber-50' : ''" @click="activeCategory = category.id">
+                  <span text-sm :class="activeCategory === category.id ? 'text-amber-800 font-medium' : 'text-gray-600'">{{ category.name }}</span>
+                  <span text-xs bg-gray-100 px-2 py-0.5 rounded>{{ category.count }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div col-span-8>
+            <div bg-white rounded-xl shadow-sm>
+              <div p-6 border-b border-gray-100>
+                <h2 text-lg font-bold text-gray-900>选择医师</h2>
+              </div>
+
+              <div p-6>
+                <div grid grid-cols-2 gap-4>
+                  <div v-for="doctor in filteredDoctors" :key="doctor.id" flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-amber-50 cursor-pointer transition-colors @click="$router.push(`/consult/${doctor.id}`)">
+                    <div :class="doctor.avatarBg" w-20 h-20 rounded-full flex items-center justify-center text-3xl>{{ doctor.avatar }}</div>
+                    <div flex-1>
+                      <div flex items-center gap-2 mb-1>
+                        <h3 text-base font-bold text-gray-900>{{ doctor.name }}</h3>
+                        <span text-xs :class="doctor.badgeBg" :style="{ color: doctor.badgeColor, backgroundColor: doctor.badgeBg.replace('text-', '') + '20' }" px-2 py-0.5 rounded>{{ doctor.title }}</span>
+                      </div>
+                      <p text-sm text-gray-500 mb-1>{{ doctor.department }}</p>
+                      <p text-xs text-gray-400 mb-2>擅长：{{ doctor.specialty }}</p>
+                      <div flex items-center justify-between>
+                        <span text-sm text-amber-600 font-medium>⭐ {{ doctor.rating }}</span>
+                        <span v-if="doctor.online" text-xs text-emerald-600>在线</span>
+                        <span v-else text-xs text-gray-400>离线</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <button class="more-btn">⋯</button>
-    </div>
-    
-    <div class="chat-content" ref="chatContent">
-      <div class="system-message">
-        开始咨询，请描述您的症状或问题
-      </div>
-      
-      <div 
-        v-for="message in messages" 
-        :key="message.id"
-        class="message-item"
-        :class="{ mine: message.isMine }"
-      >
-        <img v-if="!message.isMine" :src="doctorInfo.avatar" class="message-avatar" />
-        <div class="message-bubble">
-          <p>{{ message.content }}</p>
-          <span class="message-time">{{ message.time }}</span>
+    </main>
+
+    <footer bg-gray-800 text-gray-300 mt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div text-center>
+          <p text-sm>© 2022 江苏凤凰优阅信息科技有限公司 版权所有</p>
         </div>
-        <img v-if="message.isMine" :src="userAvatar" class="message-avatar" />
       </div>
-    </div>
-    
-    <div class="chat-input-area">
-      <input 
-        v-model="inputMessage"
-        type="text" 
-        class="chat-input"
-        placeholder="请输入您的问题..."
-        @keyup.enter="sendMessage"
-      />
-      <button class="send-btn" :disabled="!inputMessage.trim()" @click="sendMessage">
-        发送
-      </button>
-    </div>
+    </footer>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+<script setup>
+import { ref, computed } from 'vue'
 
-const route = useRoute()
-const router = useRouter()
+const activeCategory = ref('all')
 
-const chatContent = ref<HTMLElement | null>(null)
-const inputMessage = ref('')
-const userAvatar = '👤'
-
-const doctorInfo = ref({
-  id: '',
-  name: '张明华',
-  avatar: 'https://via.placeholder.com/60x60/d4a574/ffffff?text=张',
-  title: '主任医师'
-})
-
-const messages = ref([
-  {
-    id: '1',
-    content: '您好，我是张医生，请问有什么可以帮助您的？',
-    time: '10:30',
-    isMine: false
-  },
-  {
-    id: '2',
-    content: '医生您好，我最近总是感觉疲劳乏力，食欲也不好，请问是什么原因呢？',
-    time: '10:32',
-    isMine: true
-  },
-  {
-    id: '3',
-    content: '感谢您的信任。根据您的描述，可能与脾胃功能虚弱有关。中医认为，脾胃为后天之本，负责运化水谷精微，如果脾胃功能减弱，就会出现疲劳乏力、食欲不振等症状。',
-    time: '10:35',
-    isMine: false
-  },
-  {
-    id: '4',
-    content: '那我该怎么调理呢？',
-    time: '10:36',
-    isMine: true
-  },
-  {
-    id: '5',
-    content: '首先，建议您注意饮食规律，三餐定时定量，避免生冷油腻食物。可以适当食用一些健脾养胃的食物，如小米、山药、红枣等。另外，适当的运动也有助于脾胃运化。',
-    time: '10:40',
-    isMine: false
-  }
+const categories = ref([
+  { id: 'all', name: '全部医师', count: 8 },
+  { id: 'internal', name: '中医内科', count: 3 },
+  { id: 'gynecology', name: '中医妇科', count: 2 },
+  { id: 'acupuncture', name: '针灸科', count: 2 },
+  { id: 'orthopedics', name: '骨伤科', count: 1 }
 ])
 
-const sendMessage = () => {
-  if (!inputMessage.value.trim()) return
-  
-  const newMessage = {
-    id: Date.now().toString(),
-    content: inputMessage.value,
-    time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-    isMine: true
+const doctors = ref([
+  { id: '1', name: '张明华', title: '主任医师', department: '中医内科', specialty: '消化系统疾病、慢性胃炎', rating: '4.9', avatar: '👨‍⚕️', avatarBg: 'bg-amber-100', badgeBg: 'text-amber-700', badgeColor: '#92400e', online: true, category: 'internal' },
+  { id: '2', name: '李婉清', title: '副主任医师', department: '中医妇科', specialty: '月经不调、痛经', rating: '4.8', avatar: '👩‍⚕️', avatarBg: 'bg-rose-100', badgeBg: 'text-rose-700', badgeColor: '#9f1239', online: true, category: 'gynecology' },
+  { id: '3', name: '王建国', title: '主治医师', department: '针灸科', specialty: '颈椎病、腰椎间盘突出', rating: '4.7', avatar: '👨‍⚕️', avatarBg: 'bg-blue-100', badgeBg: 'text-blue-700', badgeColor: '#1e40af', online: false, category: 'acupuncture' },
+  { id: '4', name: '陈晓东', title: '主任医师', department: '骨伤科', specialty: '骨折、关节炎', rating: '4.9', avatar: '👨‍⚕️', avatarBg: 'bg-emerald-100', badgeBg: 'text-emerald-700', badgeColor: '#065f46', online: true, category: 'orthopedics' }
+])
+
+const filteredDoctors = computed(() => {
+  if (activeCategory.value === 'all') {
+    return doctors.value
   }
-  
-  messages.value.push(newMessage)
-  inputMessage.value = ''
-  
-  scrollToBottom()
-  
-  setTimeout(() => {
-    const replyMessage = {
-      id: (Date.now() + 1).toString(),
-      content: '感谢您的咨询。根据您的情况，我建议您注意休息，保持心情舒畅，同时可以考虑中药调理。如果症状持续不缓解，建议您到医院就诊。',
-      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-      isMine: false
-    }
-    
-    messages.value.push(replyMessage)
-    scrollToBottom()
-  }, 1000)
-}
-
-const scrollToBottom = () => {
-  nextTick(() => {
-    if (chatContent.value) {
-      chatContent.value.scrollTop = chatContent.value.scrollHeight
-    }
-  })
-}
-
-const goBack = () => {
-  router.back()
-}
-
-onMounted(() => {
-  const id = route.params.id as string
-  doctorInfo.value.id = id
+  return doctors.value.filter(d => d.category === activeCategory.value)
 })
 </script>
-
-<style scoped>
-.consult-page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: #f5f5f5;
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.back-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.doctor-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.doctor-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.doctor-detail {
-  display: flex;
-  flex-direction: column;
-}
-
-.doctor-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-.doctor-title {
-  font-size: 13px;
-  color: #999;
-}
-
-.more-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-}
-
-.chat-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-}
-
-.system-message {
-  text-align: center;
-  padding: 8px 16px;
-  background: #f0f0f0;
-  border-radius: 16px;
-  font-size: 13px;
-  color: #999;
-  margin-bottom: 16px;
-}
-
-.message-item {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.message-item.mine {
-  flex-direction: row-reverse;
-}
-
-.message-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.message-bubble {
-  max-width: 70%;
-}
-
-.message-bubble p {
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.message-item:not(.mine) .message-bubble p {
-  background: #fff;
-  border-radius: 0 16px 16px 16px;
-  color: #333;
-}
-
-.message-item.mine .message-bubble p {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  border-radius: 16px 0 16px 16px;
-  color: #fff;
-}
-
-.message-time {
-  display: block;
-  font-size: 11px;
-  color: #999;
-  padding: 4px 8px;
-}
-
-.message-item.mine .message-time {
-  text-align: right;
-}
-
-.chat-input-area {
-  display: flex;
-  gap: 12px;
-  padding: 12px 16px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  background: #fff;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.chat-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 24px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-.chat-input:focus {
-  border-color: #c19660;
-}
-
-.send-btn {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  color: #fff;
-  border: none;
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.send-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-</style>

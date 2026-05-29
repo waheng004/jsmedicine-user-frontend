@@ -117,7 +117,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import StatusTag from '~/components/StatusTag.vue'
-import { useApi } from '~/composables/useApi'
+import { getDoctorDetail } from '~/utils/api/doctor'
 
 const route = useRoute()
 const router = useRouter()
@@ -207,19 +207,19 @@ const handleAppointment = () => {
 }
 
 const fetchDoctorDetail = async () => {
-  const id = route.params.id as string
+  const id = parseInt(route.params.id as string) || 1
   
   try {
-    const response = await useApi(`/api/doctor/${id}`)
+    const response = await getDoctorDetail(id)
     
     if (response.data) {
       doctorDetail.value = response.data
     } else {
-      doctorDetail.value = getMockDoctor(id)
+      doctorDetail.value = getMockDoctor(String(id))
     }
   } catch (err) {
     console.error('获取医生详情失败:', err)
-    doctorDetail.value = getMockDoctor(id)
+    doctorDetail.value = getMockDoctor(String(id))
   }
 }
 

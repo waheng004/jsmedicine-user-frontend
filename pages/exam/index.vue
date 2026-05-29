@@ -1,103 +1,96 @@
-PS C:\Desktop\NuxtProject> git commit -m "feat: 初始化中医用户端Nuxt项目及API配置"
-Author identity unknown
-
-*** Please tell me who you are.
-
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.       
-
-fatal: unable to auto-detect email address (got '10779@wednesday.(none)')PS C:\Desktop\NuxtProject> git commit -m "feat: 初始化中医用户端Nuxt项目及API配置"
-Author identity unknown
-
-*** Please tell me who you are.
-
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.       
-
-fatal: unable to auto-detect email address (got '10779@wednesday.(none)')<template>
-  <div class="exam-page">
-    <div class="page-header">
-      <h1 class="page-title">在线考核</h1>
-      <p class="page-subtitle">检验学习成果</p>
-    </div>
-    
-    <div class="exam-content">
-      <div class="exam-stats">
-        <div class="stat-card">
-          <span class="stat-icon">�</span>
-          <div class="stat-info">
-            <span class="stat-value">{{ stats.totalExams }}</span>
-            <span class="stat-label">总试卷</span>
-          </div>
+<template>
+  <div min-h-screen bg-gray-50>
+    <header fixed top-0 left-0 right-0 h-16 bg-white z-50 border-b border-gray-100 shadow-sm>
+      <div max-w-7xl mx-auto h-full flex justify-between items-center px-6>
+        <div flex items-center space-x-3>
+          <span text-2xl>🏥</span>
+          <span text-xl font-bold text-amber-900>江苏中医在线</span>
         </div>
-        <div class="stat-card">
-          <span class="stat-icon">✅</span>
-          <div class="stat-info">
-            <span class="stat-value">{{ stats.passedExams }}</span>
-            <span class="stat-label">已通过</span>
-          </div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-icon">📝</span>
-          <div class="stat-info">
-            <span class="stat-value">{{ stats.attemptedExams }}</span>
-            <span class="stat-label">已参与</span>
-          </div>
-        </div>
+        <nav flex space-x-8 text-base>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/')">首页</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/topics')">专题学习</span>
+          <span cursor-pointer text-amber-800 font-bold>在线考核</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/profile')">我的</span>
+        </nav>
+        <div></div>
       </div>
-      
-      <div class="section-header">
-        <h2 class="section-title">考核列表</h2>
-      </div>
-      
-      <div class="exam-list">
-        <div 
-          v-for="exam in exams" 
-          :key="exam.id" 
-          class="exam-card"
-          :class="{ locked: !exam.accessible }"
-          @click="goToExam(exam)"
-        >
-          <div class="exam-icon">📝</div>
-          <div class="exam-info">
-            <div class="exam-header">
-              <h3 class="exam-title">{{ exam.title }}</h3>
-              <span v-if="exam.passed" class="exam-status passed">✓ 已通过</span>
-              <span v-else-if="exam.attempted" class="exam-status attempted">重试</span>
-              <span v-else-if="!exam.accessible" class="exam-status locked">🔒</span>
+    </header>
+
+    <main pt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div mb-8>
+          <h1 text-2xl font-bold text-gray-900 mb-2>在线考核</h1>
+          <p text-gray-500>检验学习成果，提升专业水平</p>
+        </div>
+
+        <div grid grid-cols-3 gap-6 mb-8>
+          <div bg-white rounded-xl shadow-sm p-6 flex items-center gap-4>
+            <div w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center text-2xl>📝</div>
+            <div>
+              <p text-3xl font-bold text-gray-900>{{ stats.totalExams }}</p>
+              <p text-sm text-gray-500>总试卷</p>
             </div>
-            <p class="exam-desc">{{ exam.description }}</p>
-            <div class="exam-meta">
-              <span class="meta-item">⏱️ {{ exam.duration }}分钟</span>
-              <span class="meta-item">📊 {{ exam.totalScore }}分</span>
-              <span class="meta-item">📝 {{ exam.questionCount }}题</span>
+          </div>
+          <div bg-white rounded-xl shadow-sm p-6 flex items-center gap-4>
+            <div w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center text-2xl>✅</div>
+            <div>
+              <p text-3xl font-bold text-emerald-600>{{ stats.passedExams }}</p>
+              <p text-sm text-gray-500>已通过</p>
             </div>
-            <div v-if="exam.score !== undefined" class="exam-result">
-              <span class="result-label">最高得分：</span>
-              <span class="result-score" :class="{ passed: exam.score >= 60 }">{{ exam.score }}分</span>
+          </div>
+          <div bg-white rounded-xl shadow-sm p-6 flex items-center gap-4>
+            <div w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-2xl>📊</div>
+            <div>
+              <p text-3xl font-bold text-blue-600>{{ stats.attemptedExams }}</p>
+              <p text-sm text-gray-500>已参与</p>
+            </div>
+          </div>
+        </div>
+
+        <div bg-white rounded-xl shadow-sm>
+          <div p-6 border-b border-gray-100>
+            <h2 text-lg font-bold text-gray-900>考核列表</h2>
+          </div>
+
+          <div p-6 space-y-4>
+            <div v-for="exam in exams" :key="exam.id" flex items-start gap-5 p-5 bg-gray-50 rounded-xl hover:bg-amber-50 cursor-pointer transition-colors :class="exam.accessible ? '' : 'opacity-60'" @click="goToExam(exam)">
+              <div :class="exam.passed ? 'bg-emerald-100' : exam.accessible ? 'bg-amber-100' : 'bg-gray-200'" w-16 h-16 rounded-xl flex items-center justify-center text-2xl>{{ exam.passed ? '✅' : exam.accessible ? '📝' : '🔒' }}</div>
+              <div flex-1>
+                <div flex justify-between items-start mb-2>
+                  <h3 text-base font-bold text-gray-900>{{ exam.title }}</h3>
+                  <span v-if="exam.passed" text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full>已通过</span>
+                  <span v-else-if="exam.attempted" text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full>可重试</span>
+                  <span v-else-if="!exam.accessible" text-xs bg-gray-200 text-gray-500 px-3 py-1 rounded-full>未解锁</span>
+                </div>
+                <p text-sm text-gray-500 mb-3>{{ exam.description }}</p>
+                <div flex items-center gap-4>
+                  <span text-xs text-gray-400>⏱️ {{ exam.duration }}分钟</span>
+                  <span text-xs text-gray-400>📊 {{ exam.totalScore }}分</span>
+                  <span text-xs text-gray-400>📝 {{ exam.questionCount }}题</span>
+                </div>
+                <div v-if="exam.score !== undefined" mt-3 pt-3 border-t border-gray-200>
+                  <span text-sm text-gray-500>最高得分：</span>
+                  <span text-lg font-bold :class="exam.score >= 60 ? 'text-emerald-600' : 'text-red-500'">{{ exam.score }}分</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
+
+    <footer bg-gray-800 text-gray-300 mt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div text-center>
+          <p text-sm>© 2022 江苏凤凰优阅信息科技有限公司 版权所有</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 
 const stats = ref({
   totalExams: 4,
@@ -154,198 +147,10 @@ const exams = ref([
   }
 ])
 
-const goToExam = (exam: any) => {
+const goToExam = (exam) => {
   if (!exam.accessible) {
     alert('请先完成前置学习才能参加此考核')
     return
   }
-  router.push(`/exam/${exam.id}`)
 }
 </script>
-
-<style scoped>
-.exam-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.page-header {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  padding: 40px 16px;
-  color: #fff;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-}
-
-.page-subtitle {
-  font-size: 14px;
-  opacity: 0.9;
-  margin: 0;
-}
-
-.exam-content {
-  padding: 16px;
-}
-
-.exam-stats {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.stat-card {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.stat-icon {
-  font-size: 28px;
-}
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  color: #333;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: #999;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-.exam-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.exam-card {
-  display: flex;
-  gap: 16px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  opacity: 1;
-}
-
-.exam-card.locked {
-  opacity: 0.7;
-}
-
-.exam-icon {
-  font-size: 40px;
-  flex-shrink: 0;
-}
-
-.exam-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.exam-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.exam-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-.exam-status {
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.exam-status.passed {
-  background: #e8f5e9;
-  color: #4caf50;
-}
-
-.exam-status.attempted {
-  background: #fff3e0;
-  color: #ff9800;
-}
-
-.exam-status.locked {
-  background: #f5f5f5;
-  color: #999;
-}
-
-.exam-desc {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 12px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.exam-meta {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 8px;
-}
-
-.meta-item {
-  font-size: 13px;
-  color: #999;
-}
-
-.exam-result {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.result-label {
-  font-size: 13px;
-  color: #999;
-}
-
-.result-score {
-  font-size: 16px;
-  font-weight: 600;
-  color: #f44336;
-}
-
-.result-score.passed {
-  color: #4caf5

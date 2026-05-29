@@ -122,6 +122,7 @@ declare global {
   const useModel: typeof import('vue').useModel
   const useNuxtApp: typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/nuxt').useNuxtApp
   const useNuxtData: typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/asyncData').useNuxtData
+  const useNuxtDevTools: typeof import('../../node_modules/.pnpm/@nuxt+devtools@3.2.4_vite@7_70d5e568a4c709c8538b8fd861578d5c/node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools').useNuxtDevTools
   const usePinia: typeof import('../../node_modules/.pnpm/@pinia+nuxt@0.5.5_magicast@_77ff158189ead2ac159a06968fbd4055/node_modules/@pinia/nuxt/dist/runtime/composables').usePinia
   const usePreviewMode: typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/preview').usePreviewMode
   const useRequestEvent: typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/ssr').useRequestEvent
@@ -332,6 +333,7 @@ declare module 'vue' {
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
+    readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/.pnpm/@nuxt+devtools@3.2.4_vite@7_70d5e568a4c709c8538b8fd861578d5c/node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly usePinia: UnwrapRef<typeof import('../../node_modules/.pnpm/@pinia+nuxt@0.5.5_magicast@_77ff158189ead2ac159a06968fbd4055/node_modules/@pinia/nuxt/dist/runtime/composables')['usePinia']>
     readonly usePreviewMode: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']>
     readonly useRequestEvent: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']>

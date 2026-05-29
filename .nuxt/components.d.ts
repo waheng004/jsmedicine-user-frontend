@@ -16,6 +16,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 export const DoctorCard: typeof import("../components/DoctorCard.vue")['default']
 export const StatusTag: typeof import("../components/StatusTag.vue")['default']
+export const UnoIcon: typeof import("../node_modules/.pnpm/@unocss+nuxt@0.60.4_magicas_1c048bcd9cf2c7b95607ae416e5b2d5a/node_modules/@unocss/nuxt/runtime/UnoIcon.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-layout")['default']
 export const NuxtErrorBoundary: typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -41,6 +42,7 @@ export const Body: typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watc
 export const NuxtIsland: typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const LazyDoctorCard: LazyComponent<typeof import("../components/DoctorCard.vue")['default']>
 export const LazyStatusTag: LazyComponent<typeof import("../components/StatusTag.vue")['default']>
+export const LazyUnoIcon: LazyComponent<typeof import("../node_modules/.pnpm/@unocss+nuxt@0.60.4_magicas_1c048bcd9cf2c7b95607ae416e5b2d5a/node_modules/@unocss/nuxt/runtime/UnoIcon.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/.pnpm/nuxt@3.21.6_@parcel+watcher_89f371a310f910651428bf5666c63367/node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

@@ -34,3 +34,4 @@ export { useApi, useApiGet, useApiPost, useApiPut, useApiDelete, ApiOptions } fr
 export { useCommonStore } from '../stores/common';
 export { useUserStore } from '../stores/user';
 export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/.pnpm/@pinia+nuxt@0.5.5_magicast@_77ff158189ead2ac159a06968fbd4055/node_modules/@pinia/nuxt/dist/runtime/composables';
+export { useNuxtDevTools } from '../node_modules/.pnpm/@nuxt+devtools@3.2.4_vite@7_70d5e568a4c709c8538b8fd861578d5c/node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

@@ -1,5 +1,5 @@
 import { navigateTo, useCookie, useFetch, useRuntimeConfig } from "nuxt/app"
-
+// @ts-ignore - Nuxt type inference issue with useCookie
 export interface ApiOptions {
   baseURL?: string
   token?: string
@@ -27,9 +27,15 @@ export const useApi = async <T = any>(
   } = options
 
   const config = useRuntimeConfig()
+  // @ts-ignore - Nuxt type inference issue
   const apiBaseURL: string = baseURL || config.public.apiBaseURL || '/api'
   
-  const authToken: string = token || useCookie('token').value || ''
+  const getToken = (): string => {
+    const cookie = useCookie('token')
+    const val = (cookie as any).value
+    return typeof val === 'string' ? val : ''
+  }
+  const authToken: string = token || getToken()
 
   const headers: Record<string, string> = customHeaders || {}
 

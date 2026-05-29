@@ -86,7 +86,16 @@ const isFavorited = ref(false)
 const isLiked = ref(false)
 const newComment = ref('')
 
-const articleDetail = ref({
+const articleDetail = ref<{
+  id: string
+  title: string
+  category: string
+  author: string
+  publishDate: string
+  views: number
+  content: string
+  tags: string[]
+}>({
   id: '',
   title: '',
   category: '',
@@ -180,7 +189,7 @@ const handleShare = () => {
 }
 
 const handleComment = () => {
-  document.querySelector('.comment-input')?.focus()
+  (document.querySelector('.comment-input') as HTMLElement)?.focus()
 }
 
 const handleLike = () => {

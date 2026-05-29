@@ -1,4 +1,11 @@
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  esbuild: set this to true or false
-  vue-demi: set this to true or false
+  '@parcel/watcher': true
+  esbuild: true
+  vue-demi: true
+
+# 全局允许工作区内的这些核心依赖执行构建脚本
+pnpm:
+  onlyBuiltDependencies:
+    - "@parcel/watcher"
+    - "esbuild"
+    - "vue-demi"

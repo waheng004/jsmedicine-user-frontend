@@ -294,4 +294,5 @@ const removeFavorite = (item: any) => {
 
 .delete-btn:hover {
   background: #ffebee;
-  color: #f44336
+  color: #f44336;}
+  </style>
