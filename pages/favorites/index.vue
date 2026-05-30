@@ -1,47 +1,65 @@
 <template>
-  <div class="favorites-page">
-    <div class="page-header">
-      <h1 class="page-title">我的收藏</h1>
-    </div>
-    
-    <div class="tabs-container">
-      <button 
-        v-for="tab in tabs" 
-        :key="tab.key"
-        class="tab-btn"
-        :class="{ active: activeTab === tab.key }"
-        @click="activeTab = tab.key"
-      >
-        {{ tab.label }}
-      </button>
-    </div>
-    
-    <div class="favorites-content">
-      <div v-if="favorites[activeTab].length === 0" class="empty-state">
-        <div class="empty-icon">{{ getEmptyIcon() }}</div>
-        <p>{{ getEmptyText() }}</p>
+  <div min-h-screen bg-gray-50>
+    <header fixed top-0 left-0 right-0 h-16 bg-white z-50 border-b border-gray-100 shadow-sm>
+      <div max-w-7xl mx-auto h-full flex justify-between items-center px-6>
+        <div flex items-center space-x-3>
+          <span text-2xl>🏥</span>
+          <span text-xl font-bold text-amber-900>江苏中医在线</span>
+        </div>
+        <nav flex space-x-8 text-base>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/')">首页</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/topics')">专题学习</span>
+          <span cursor-pointer text-amber-800 font-bold>我的收藏</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/profile')">我的</span>
+        </nav>
+        <div></div>
       </div>
-      
-      <div v-else class="favorites-list">
-        <div 
-          v-for="item in favorites[activeTab]" 
-          :key="item.id"
-          class="favorite-item"
-          @click="goToDetail(item)"
-        >
-          <div class="item-cover">
-            <img v-if="item.cover" :src="item.cover" :alt="item.title" />
-            <span v-else class="cover-icon">{{ getCoverIcon() }}</span>
+    </header>
+
+    <main pt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div mb-8>
+          <h1 text-2xl font-bold text-gray-900 mb-2>我的收藏</h1>
+          <p text-gray-500>管理您收藏的内容</p>
+        </div>
+
+        <div flex gap-4 mb-8 max-w-3xl>
+          <button v-for="tab in tabs" :key="tab.key" px-6 py-3 rounded-xl font-medium cursor-pointer transition-all :class="activeTab === tab.key ? 'bg-amber-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'" @click="activeTab = tab.key">
+            {{ tab.label }}
+          </button>
+        </div>
+
+        <div max-w-3xl>
+          <div v-if="favorites[activeTab].length === 0" bg-white rounded-xl shadow-sm p-16 text-center>
+            <span text-6xl mb-4 block>{{ getEmptyIcon() }}</span>
+            <p text-gray-500>{{ getEmptyText() }}</p>
           </div>
-          <div class="item-info">
-            <h3 class="item-title">{{ item.title }}</h3>
-            <p class="item-desc">{{ item.description }}</p>
-            <span class="item-date">{{ item.date }}</span>
+
+          <div v-else class="space-y-4">
+            <div v-for="item in favorites[activeTab]" :key="item.id" bg-white rounded-xl shadow-sm p-5 flex gap-4 cursor-pointer hover:bg-amber-50 transition-colors @click="goToDetail(item)">
+              <div w-24 h-16 bg-amber-50 rounded-lg flex items-center justify-center text-2xl flex-shrink-0>
+                <img v-if="item.cover" :src="item.cover" :alt="item.title" w-full h-full object-cover rounded-lg />
+                <span v-else>{{ getCoverIcon() }}</span>
+              </div>
+              <div flex-1>
+                <h3 text-base font-bold text-gray-900 mb-1>{{ item.title }}</h3>
+                <p text-sm text-gray-600 mb-2 line-clamp-2>{{ item.description }}</p>
+                <span text-xs text-gray-400>{{ item.date }}</span>
+              </div>
+              <button w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 cursor-pointer transition-colors @click.stop="removeFavorite(item)">✕</button>
+            </div>
           </div>
-          <button class="delete-btn" @click.stop="removeFavorite(item)">✕</button>
         </div>
       </div>
-    </div>
+    </main>
+
+    <footer bg-gray-800 text-gray-300 mt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div text-center>
+          <p text-sm>© 2022 江苏凤凰优阅信息科技有限公司 版权所有</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -65,7 +83,7 @@ const favorites = ref({
       id: '1',
       title: '春季养肝正当时',
       description: '春季如何通过饮食和作息调理肝脏...',
-      cover: 'https://via.placeholder.com/120x80/d4a574/ffffff?text=养生',
+      cover: 'https://via.placeholder.com/96x64/d4a574/ffffff?text=养生',
       date: '2024-05-20',
       type: 'article'
     },
@@ -73,7 +91,7 @@ const favorites = ref({
       id: '2',
       title: '中医茶饮养生',
       description: '不同体质适合的茶饮推荐...',
-      cover: 'https://via.placeholder.com/120x80/c19660/ffffff?text=茶饮',
+      cover: 'https://via.placeholder.com/96x64/c19660/ffffff?text=茶饮',
       date: '2024-05-18',
       type: 'article'
     }
@@ -83,7 +101,7 @@ const favorites = ref({
       id: '1',
       title: '中医基础理论入门',
       description: '系统学习中医基础理论...',
-      cover: 'https://via.placeholder.com/120x80/8b7355/ffffff?text=基础',
+      cover: 'https://via.placeholder.com/96x64/8b7355/ffffff?text=基础',
       date: '2024-05-15',
       type: 'topic'
     }
@@ -147,152 +165,3 @@ const removeFavorite = (item: any) => {
   }
 }
 </script>
-
-<style scoped>
-.favorites-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.page-header {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  padding: 40px 16px;
-  color: #fff;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.tabs-container {
-  display: flex;
-  padding: 8px 16px;
-  background: #fff;
-  gap: 8px;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  color: #666;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.tab-btn.active {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  color: #fff;
-}
-
-.favorites-content {
-  padding: 16px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 0;
-}
-
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.empty-state p {
-  color: #999;
-  font-size: 14px;
-}
-
-.favorites-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.favorite-item {
-  display: flex;
-  gap: 12px;
-  padding: 12px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.item-cover {
-  width: 100px;
-  height: 70px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.item-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.cover-icon {
-  font-size: 32px;
-}
-
-.item-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.item-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 6px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.item-desc {
-  font-size: 13px;
-  color: #666;
-  margin: 0 0 6px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.item-date {
-  font-size: 12px;
-  color: #999;
-}
-
-.delete-btn {
-  padding: 8px;
-  border: none;
-  background: #f5f5f5;
-  border-radius: 50%;
-  font-size: 14px;
-  color: #999;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.delete-btn:hover {
-  background: #ffebee;
-  color: #f44336;}
-  </style>

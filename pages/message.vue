@@ -1,34 +1,60 @@
 <template>
-  <div class="message-page">
-    <div class="page-header">
-      <h1 class="page-title">消息</h1>
-    </div>
-    
-    <div class="message-content">
-      <div v-if="messages.length === 0" class="empty-state">
-        <div class="empty-icon">💬</div>
-        <p>暂无消息</p>
+  <div min-h-screen bg-gray-50>
+    <header fixed top-0 left-0 right-0 h-16 bg-white z-50 border-b border-gray-100 shadow-sm>
+      <div max-w-7xl mx-auto h-full flex justify-between items-center px-6>
+        <div flex items-center space-x-3>
+          <span text-2xl>🏥</span>
+          <span text-xl font-bold text-amber-900>江苏中医在线</span>
+        </div>
+        <nav flex space-x-8 text-base>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/')">首页</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/topics')">专题学习</span>
+          <span cursor-pointer text-amber-800 font-bold>消息中心</span>
+          <span cursor-pointer text-gray-500 hover:text-amber-800 @click="$router.push('/profile')">我的</span>
+        </nav>
+        <div></div>
       </div>
-      
-      <div v-else class="message-list">
-        <div 
-          v-for="message in messages" 
-          :key="message.id" 
-          class="message-item"
-          @click="openMessage(message)"
-        >
-          <div class="message-avatar">{{ message.avatar }}</div>
-          <div class="message-info">
-            <div class="message-header">
-              <span class="message-name">{{ message.name }}</span>
-              <span class="message-time">{{ message.time }}</span>
-            </div>
-            <p class="message-preview">{{ message.preview }}</p>
+    </header>
+
+    <main pt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div mb-8>
+          <h1 text-2xl font-bold text-gray-900 mb-2>消息中心</h1>
+          <p text-gray-500>查看最新消息通知</p>
+        </div>
+
+        <div max-w-3xl mx-auto>
+          <div v-if="messages.length === 0" bg-white rounded-xl shadow-sm p-16 text-center>
+            <span text-6xl mb-4 block>💬</span>
+            <p text-gray-500>暂无消息</p>
           </div>
-          <div v-if="message.unread" class="unread-badge">{{ message.unread }}</div>
+
+          <div v-else class="space-y-4">
+            <div v-for="message in messages" :key="message.id" bg-white rounded-xl shadow-sm p-5 flex items-center gap-4 cursor-pointer hover:bg-amber-50 transition-colors @click="openMessage(message)">
+              <div w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center text-3xl>{{ message.avatar }}</div>
+              <div flex-1>
+                <div flex justify-between items-start mb-2>
+                  <h3 text-base font-bold text-gray-900>{{ message.name }}</h3>
+                  <span text-sm text-gray-400>{{ message.time }}</span>
+                </div>
+                <p text-sm text-gray-600>{{ message.preview }}</p>
+              </div>
+              <div v-if="message.unread" w-6 h-6 bg-red-500 rounded-full flex items-center justify-center>
+                <span text-xs text-white font-bold>{{ message.unread }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
+
+    <footer bg-gray-800 text-gray-300 mt-16>
+      <div max-w-7xl mx-auto px-6 py-8>
+        <div text-center>
+          <p text-sm>© 2022 江苏凤凰优阅信息科技有限公司 版权所有</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -58,109 +84,3 @@ const openMessage = (message: any) => {
   console.log('打开消息:', message.id)
 }
 </script>
-
-<style scoped>
-.message-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.page-header {
-  background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
-  padding: 40px 16px;
-  color: #fff;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.message-content {
-  padding: 16px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 0;
-}
-
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.empty-state p {
-  color: #999;
-  font-size: 14px;
-}
-
-.message-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.message-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.message-avatar {
-  font-size: 40px;
-}
-
-.message-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.message-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-}
-
-.message-time {
-  font-size: 12px;
-  color: #999;
-}
-
-.message-preview {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.unread-badge {
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background: #f44336;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
